@@ -23,17 +23,13 @@ class GameWindow < Gosu::Window
 
   def update
     # TODO: get  a better player input handling - this is too clunky and ugly in general, as well as poor mem managment
-    @direction = "STOP"
-    if button_down? Gosu::KbW 
-	  @direction = "UP"
-	end
-	if button_down? Gosu::KbS 
-	  @direction = "DOWN"
-	end
-	@action = "IDLE"
-	if button_down? Gosu::KbSpace
-	  @action = "FIRE"
-	end
+    if button_down? Gosu::KbW 	  		
+		@direction = "UP" 
+	elsif button_down? Gosu::KbS 
+		@direction = "DOWN"
+	else
+		@direction = "STOP"
+	end # Can't remove this yet - the button listener doesn't react to unpressed buttons? so i can't stop him
 	
 	# TODO: this should have some random enemy spawning action as well... not sure where to put it though, but for testing purposes, this is at a high prio
 	max_x = 0
@@ -61,7 +57,7 @@ class GameWindow < Gosu::Window
     #@direction 
     @player.accelerate @direction
     bullets = []
-    bullets << @player.move
+    bullets << @player.move #TODO - waeapons reloading should get their own cycle - can probably put all weapons in a joined array for speed
 	#@action
 	if button_down? Gosu::KbSpace
 	  bullets << @player.weapons[0].fire if @player.weapons[0].reloaded?
@@ -135,6 +131,7 @@ class GameWindow < Gosu::Window
 	   enemy.target = nil
 	 end
 	end
+	
 	#cleanup (killing)
 	@enemies.each do |enemy| 
 	  unless enemy.alive?
@@ -148,6 +145,7 @@ class GameWindow < Gosu::Window
 	    bullet.destroy(@animations, @fields)
 	  end
 	end
+	
 	#more cleanup (memory)
 	@bullets.select! { |bullet| bullet.alive?}	
 	@enemies.select! { |enemy| enemy.alive?}
@@ -164,9 +162,14 @@ class GameWindow < Gosu::Window
   end
   
   def button_down(id) #TODO: move all button controls to this function
-    if id == Gosu::KbEscape
-      close
-    end
+    close if id == Gosu::KbEscape
+			
+	if button_down? Gosu::KbSpace
+		@action = "FIRE"
+	else
+		@action = "IDLE"
+	end
+	
   end
 end
 

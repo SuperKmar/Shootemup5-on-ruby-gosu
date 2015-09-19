@@ -80,8 +80,8 @@ class PlayerWeapon < Weapon
     @bullet = Bullet 
     @reload = 100
     @burst_count = 3
-    @burst_reload = 15
-    @max_spread_angle = 1 # in degrees, double it to get arc of fire
+    @burst_reload = 7
+    @max_spread_angle = 2 # in degrees, double it to get arc of fire
   end  
 end
 
@@ -91,16 +91,16 @@ class Bullet < Object_with_mass #not sure we even need this, but ok
   attr_reader :life
   
   def localinit
-    @life = 500 #500
+    @life = 300 #500
 	@image_location = "Media/Bullet.png"
 	#@image = Gosu::Image.new(@window, @image_location, false) #image_location
 	#@vx = 10 #moved to weapon definition
 	#@vy = 0
 	@max_speed = 10 #7
 	@acceleration = 0.001
-	@hitpoints = 20 #20
-	@mass = 6 #10
-	@size = 5
+	@hitpoints = 80 #20
+	@mass = 50 #10
+	@size = 4
 	@friction = 0.001 #0.001
 	#setfactors
 	
@@ -135,7 +135,7 @@ class BulletAnimation < Massless_object
     @mass = 10
 	@max_speed = 5
 	@acceleration = 0
-    @size = 10
+    @size = 7
 	@image_location = "Media/BulletAnimation.png"
 	@image_size = -10
     #@image = Gosu::Image.load_tiles(@window, @image_location, -10, -1, true)
@@ -161,7 +161,7 @@ class Bullet_explosion < Explosion
     @edge_damage = 1
     @damage_radius = 1
     
-    @force = 20
+    @force = 10
     @edge_force = 10
     @force_radius = 30
 	
